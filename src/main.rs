@@ -1,7 +1,6 @@
-//use std::fs::File;
-//use std::path::{Path, PathBuf};
+//use std::net::SocketAddr;
 use std::fs;
-use std::net::SocketAddr;
+use std::path::Path;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -9,13 +8,14 @@ fn main() {
         println!("Err::Arguments can get one.");
         std::process::exit(0);
     }
-    //let a: () = args[1];
-    let p = &args[1];
-    println!("{:?}", p);
-    println!("{:?}", read_file(p));
+
+    let p = Path::new(&args[1]); //&std::path::Path
+    let html = read_file(p);
+    println!("{:?}", html.unwrap());
 }
 
-fn read_file(path: &String) -> Result<(), Box<dyn std::error::Error + 'static>> {
-    let f: SocketAddr = fs::read_to_string(path)?.parse()?;
-    Ok(())
+fn read_file(p: &std::path::Path) -> Result<String, Box<dyn std::error::Error + 'static>> {
+    let html = fs::read_to_string(p)?;
+    Ok(html)
 }
+//:RustRun test/files/index.html
